@@ -1,16 +1,18 @@
-import datetime
-import logging, html, json, traceback
+import logging, html, json, traceback, datetime, os
 from telegram import ForceReply, Update
 from telegram.constants import ParseMode
 from telegram.ext import Application, CommandHandler, ContextTypes, MessageHandler, filters, CallbackContext
+from dotenv import load_dotenv
 from modules import all_handlers
+load_dotenv()
 
+token = os.environ.get('BOT_TOKEN')
+chat_id = os.environ.get('DEVELOPER_CHAT_ID')
 
 logging.basicConfig(
     format="%(asctime)s - %(name)s - %(levelname)s - %(message)s", level=logging.INFO
 )
 logger = logging.getLogger(__name__)
-DEVELOPER_CHAT_ID = "YOUR_LOG_GROUP/CHANNEL_CHAT_ID_HERE"
 
 
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
@@ -21,7 +23,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
         reply_markup=ForceReply(selective=True),
     )
     await context.bot.send_message(
-        chat_id=DEVELOPER_CHAT_ID, text= f"✅ A person has started the bot!\n\n🪪 Name: {user.mention_html()}\n🆔 ChatID: {chat_id}\n📅 Date&Time: {datetime.datetime.now()}", parse_mode=ParseMode.HTML
+        chat_id=chat_id, text= f"✅ A person has started the bot!\n\n🪪 Name: {user.mention_html()}\n🆔 ChatID: {chat_id}\n📅 Date&Time: {datetime.datetime.now()}", parse_mode=ParseMode.HTML
     )
 
 async def error_handler(update: object, context: ContextTypes.DEFAULT_TYPE) -> None:
@@ -41,11 +43,11 @@ async def error_handler(update: object, context: ContextTypes.DEFAULT_TYPE) -> N
     )
 
     await context.bot.send_message(
-        chat_id=DEVELOPER_CHAT_ID, text=message, parse_mode=ParseMode.HTML
+        chat_id=chat_id, text=message, parse_mode=ParseMode.HTML
     )
 
 def main() -> None:
-    application = Application.builder().token("YOUR_BOT_TOKEN_HERE").build()
+    application = Application.builder().token(token).build()
 
     for handler in all_handlers:
         if len(handler) == 2:
