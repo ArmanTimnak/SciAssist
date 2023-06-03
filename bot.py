@@ -7,7 +7,7 @@ from modules import all_handlers
 load_dotenv()
 
 token = os.environ.get('BOT_TOKEN')
-chat_id = os.environ.get('DEVELOPER_CHAT_ID')
+dev_chat_id = os.environ.get('DEVELOPER_CHAT_ID')
 
 logging.basicConfig(
     format="%(asctime)s - %(name)s - %(levelname)s - %(message)s", level=logging.INFO
@@ -23,7 +23,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
         reply_markup=ForceReply(selective=True),
     )
     await context.bot.send_message(
-        chat_id=chat_id, text= f"✅ A person has started the bot!\n\n🪪 Name: {user.mention_html()}\n🆔 ChatID: {chat_id}\n📅 Date&Time: {datetime.datetime.now()}", parse_mode=ParseMode.HTML
+        chat_id=dev_chat_id, text= f"✅ A person has started the bot!\n\n🪪 Name: {user.mention_html()}\n🆔 ChatID: {chat_id}\n📅 Date&Time: {datetime.datetime.now()}", parse_mode=ParseMode.HTML
     )
 
 async def error_handler(update: object, context: ContextTypes.DEFAULT_TYPE) -> None:
@@ -43,7 +43,7 @@ async def error_handler(update: object, context: ContextTypes.DEFAULT_TYPE) -> N
     )
 
     await context.bot.send_message(
-        chat_id=chat_id, text=message, parse_mode=ParseMode.HTML
+        chat_id=dev_chat_id, text=message, parse_mode=ParseMode.HTML
     )
 
 def main() -> None:
